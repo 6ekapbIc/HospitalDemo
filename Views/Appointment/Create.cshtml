@@ -1,0 +1,145 @@
+﻿@using Tutorial1;
+@model AppointmentViewModel
+@{
+    ViewData["Title"] = "Appointment Page";
+}
+
+<div class="container p-0">
+    <div class="row pt-2">
+        <div class="col-8">
+            <h2 class="text-primary">Appointments</h2>
+        </div>
+        <div class="col-4">
+            <h2 class="text-primary">Create new Appointment</h2>
+        </div>
+        <br />
+
+        <div class="col-8">
+            <table class="table table-bordered table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            Doctor Name
+                        </th>
+                        <th>
+                            Diagnose
+                        </th>
+                        <th>
+                            Complaints
+                        </th>
+                        <th>
+                            Date Of Visit
+                        </th>
+                        <th>
+                            Patient Name
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.appointments)
+                    {
+                        <tr>
+                            <td width="20%">@item.DoctorName</td>
+                            <td width="20%">@item.Diagnose</td>
+                            <td width="20%">@item.Complaints</td>
+                            <td width="20%">@item.DateOfVisit</td>
+                            <td width="20%">@item.PatientName</td>
+                            <td width="20%">
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+        <div class="col-4">
+            <br />
+            <br />
+            <div class="container" id="tohide">
+                <form method="post" asp-action="Create">
+                    <div class="border p-3">
+                        @Html.ValidationSummary(true)
+                        <div class="form-group row">
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label asp-for="appointment.DoctorName"></label>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DropDownListFor(m => m.DoctorId, Model.doctors as SelectList)
+                                        @Html.ValidationMessageFor(x => x.appointment.DoctorName)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label asp-for="appointment.PatientName"></label>
+                                    </div>
+                                    <div class="col-6">
+                                        @Html.DropDownListFor(m => m.PatientId, Model.patients as SelectList)
+                                        @Html.ValidationMessageFor(x => x.appointment.PatientName)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label asp-for="Diagnose"></label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input asp-for="Diagnose" class="form-control" />
+                                        <span asp-validation-for="appointment.Diagnose" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label asp-for="Complaints"></label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input asp-for="Complaints" class="form-control" />
+                                        <span asp-validation-for="appointment.Complaints" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label asp-for="DateOfVisit"></label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input asp-for="DateOfVisit" id="datepicker" class="form-control"
+                                               value="@DateTime.Now.ToString("yyyy-MM-ddThh:mm")" />
+                                        <span asp-validation-for="DateOfVisit" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-8 row">
+                                        <div class="col">
+                                            <input type="submit" class="btn btn-info w-100" value="Create" />
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script>
+}
